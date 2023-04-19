@@ -1,17 +1,22 @@
 import { Box, Card, CardHeader, CardContent, Stack, Typography, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from "@mui/material";
-import { positions } from '@mui/system';
 import "./ToDoList.css";
 import { TransitionProps } from '@mui/material/transitions';
-import { useState } from "react";
-import React from "react";
-import { createTodo } from '../graphql/mutations'
-import { API } from "aws-amplify";
-import { takeCoverage } from "v8";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@mui/icons-material/Add';
+
+import React, { useEffect, useState } from 'react';
+import { Amplify, API, graphqlOperation } from 'aws-amplify';
+import { listTodos } from '../graphql/queries';
+
+import * as mutations from '../graphql/mutations';
+import { GraphQLQuery } from '@aws-amplify/api';
+import { CreateTodoInput, CreateTodoMutation, DeleteTodoInput, DeleteTodoMutation, UpdateTodoInput, UpdateTodoMutation } from '../API';
+
+import awsmobile from "../aws-exports";
+Amplify.configure(awsmobile);
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -22,23 +27,66 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const handleSubmit = async () => {
-  await API.graphql({
-    query: createTodo,
-    variables: {
-      input: {
-        title: "",
-        description: "",
-        status: "",
-        dueDate: "",
-      }
-    }
-  })
-}
-
 const ToDoList = () => {
 
-  const [tasklist, setTaskList] = useState<{ title: string; description: string; status: string; dueDate: string; }[]>([]);
+  const [ todos, setTodos ] = useState<any>([]);
+
+  const fetchTodos = async () => {
+    try {
+      const todoData: any = await API.graphql(graphqlOperation(listTodos))
+      const todos: any = todoData.data.listTodos.items
+      console.log('todos: ');
+      console.log(todos);
+      setTodos(todos)
+    } catch (err) { console.log('error fetching todos') }
+  }
+
+  const addTodo = async (form: any) => {
+      try {
+      console.log('Trying...')
+      const newTodo = await API.graphql<GraphQLQuery<CreateTodoMutation>>(
+        graphqlOperation(mutations.createTodo, { input: form })
+      );
+      console.log('Succeeded!');
+    } catch (err) {
+      console.log('error creating todo:', err)
+    }
+  }
+
+  const deleteTodo = async (id: any) => {
+    try {
+      console.log('Trying...')
+      await API.graphql<GraphQLQuery<DeleteTodoMutation>>({ 
+        query: mutations.deleteTodo, 
+        variables: { input: {id: id } }
+      });
+      //
+      console.log('Succeeded!');
+    } catch (err) {
+      console.log('error deleting todo:', err)
+    }
+  }
+
+  const editTodo = async () => {
+    try {
+      console.log('Trying...')
+      const updatedTodo = await API.graphql<GraphQLQuery<UpdateTodoMutation>>({ 
+        query: mutations.updateTodo, 
+        variables: { input: {
+          id: '7788e2ce-7fb3-4314-b8c9-cf91d2e8bcf7',
+          title: 'Feed the dog',
+          description: '0.5 cup of dry food',
+        } }
+      });
+      console.log('Succeeded!');
+    } catch (err) {
+      console.log('error updating todo:', err)
+    }
+  }
+  
+  useEffect(() => {
+    fetchTodos();
+  }, []);
 
   const [open, setOpen] = useState(false);
 
@@ -54,8 +102,13 @@ const ToDoList = () => {
   };
 
   const handleClose = () => {
-    setTaskList([...tasklist, form]);
     setOpen(false);
+    setForm({
+      title: "",
+      description: "",
+      status: "",
+      dueDate: "",
+    });
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,15 +119,11 @@ const ToDoList = () => {
     })
   };
 
-  const getButtonColor = (event: string) => {
-    if (event == 'Pending') {
-      return 'secondary';
-    } else {
-      return 'primary';
-    }
-
-  }
-
+  // TESTING
+  useEffect(() => {
+    console.log('form: ');
+    console.log(form);
+  }, [form])
 
   return (
     <Card variant='outlined'>
@@ -108,30 +157,36 @@ const ToDoList = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          <Button onClick={handleClose}>Add</Button>
+          <Button onClick={() => {
+            addTodo(form);
+            setOpen(false);
+          }}>Add</Button>
         </DialogActions>
       </Dialog>
-
       <CardContent>
-        <Stack spacing={1}>
+        <Stack spacing={2}>
           <Box sx={{ margin: "4px" }}>
-              {tasklist.map((task, index) => (
-              <Box sx={{ margin: "10px" }}>
+             {todos?.map((todo: any, index: any) => (
+              <Box sx={{ margin: "10px" }} key={index}>
                 <Stack direction="row" justifyContent="space-between" spacing={10} alignItems="flex-start">
                   <Stack direction="column">
-                    <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{task.title}</Typography>
-                    <Typography sx={{ fontSize: '14px' }}>{task.description}</Typography>
-                    <Button size="small" color={getButtonColor(task.status)}>{task.status}</Button>
+                    <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{todo?.title}</Typography>
+                    <Typography sx={{ fontSize: '14px' }}>{todo?.description}</Typography>
+                    <Button size="small">{todo?.status}</Button>
                   </Stack>
                   <Stack direction="column">
                     <Typography sx={{ fontWeight: 'bold' }}>Date</Typography>
-                    <Typography>{task.dueDate}</Typography>
+                    <Typography>{todo?.dueDate}</Typography>
                   </Stack>
                   <Stack direction="row" spacing={1}>
                     <IconButton color="primary">
                       <EditIcon />
                     </IconButton>
-                    <IconButton color="secondary">
+                    <IconButton color="secondary" onClick={
+                      () => {
+                        deleteTodo(todo?.id);
+                      }
+                    }>
                       <DeleteIcon />
                     </IconButton>
                   </Stack>
