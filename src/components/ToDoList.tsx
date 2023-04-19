@@ -7,6 +7,9 @@ import { useState } from "react";
 import React from "react";
 import { createTodo } from '../graphql/mutations'
 import { API } from "aws-amplify";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -52,11 +55,16 @@ const ToDoList = () => {
 
   return (
     <Card variant='outlined'>
-      <CardHeader title='My Tasks' />
-
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Add New Task
-      </Button>
+      <Box sx={{ display: 'flex', justifyContent: "space-between" }}>
+        <CardHeader title='My Tasks' />
+        <Button
+          variant="contained"
+          sx={{ height: "2.5rem", alignSelf: "center", marginRight: "10px" }}
+          onClick={handleClickOpen}>
+          Add Task
+          <AddIcon />
+        </Button>
+      </Box>
 
       <Dialog
         open={open}
@@ -82,13 +90,54 @@ const ToDoList = () => {
       </Dialog>
 
       <CardContent>
-        <Stack spacing={1}>
+        <Stack spacing={4}>
           <Box>
-            <FormGroup>
-              <FormControlLabel control={<Checkbox defaultChecked />} label="Task 1" />
-              <FormControlLabel control={<Checkbox />} label="Task 2" />
-              <FormControlLabel control={<Checkbox />} label="Task 3" />
-            </FormGroup>
+            <div className="task-container">
+              <Box sx={{ display: 'flex', justifyContent: "space-between" }}>
+                <h2>Task 1</h2>
+                <h5>Date</h5>
+                <Box>
+                  <div className="showOnHover">
+                    <EditIcon />
+                    <DeleteIcon />
+                  </div>
+                </Box >
+              </Box>
+              <h5>Decription</h5>
+              <button>Status</button>
+            </div>
+          </Box>
+          <Box>
+            <div className="task-container">
+              <Box sx={{ display: 'flex', justifyContent: "space-between" }}>
+                <h2>Task 1</h2>
+                <h5>Date</h5>
+                <Box>
+                  <div className="showOnHover">
+                    <EditIcon />
+                    <DeleteIcon />
+                  </div>
+                </Box >
+              </Box>
+              <h5>Decription</h5>
+              <button>Status</button>
+            </div>
+          </Box>
+          <Box>
+            <div className="task-container">
+              <Box sx={{ display: 'flex', justifyContent: "space-between" }}>
+                <h2>Task 1</h2>
+                <h5>Date</h5>
+                <Box>
+                  <div className="showOnHover">
+                    <EditIcon />
+                    <DeleteIcon />
+                  </div>
+                </Box >
+              </Box>
+              <h5>Decription</h5>
+              <button>Status</button>
+            </div>
           </Box>
         </Stack>
       </CardContent>
@@ -97,3 +146,8 @@ const ToDoList = () => {
 };
 
 export default ToDoList;
+{/* <FormGroup>
+              <FormControlLabel control={<Checkbox defaultChecked />} label="Task 1" />
+              <FormControlLabel control={<Checkbox />} label="Task 2" />
+              <FormControlLabel control={<Checkbox />} label="Task 3" />
+            </FormGroup> */}
