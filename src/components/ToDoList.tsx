@@ -11,6 +11,7 @@ import { takeCoverage } from "v8";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import AddIcon from '@mui/icons-material/Add';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -54,13 +55,6 @@ const ToDoList = () => {
 
   const handleClose = () => {
     setTaskList([...tasklist, form]);
-    console.log(form)
-    setForm({
-      title: "",
-      description: "",
-      status: "",
-      dueDate: "",
-    });
     setOpen(false);
   };
 
@@ -72,14 +66,28 @@ const ToDoList = () => {
     })
   };
 
+  const getButtonColor = (event: string) => {
+    if (event == 'Pending') {
+      return 'secondary';
+    } else {
+      return 'primary';
+    }
+
+  }
+
 
   return (
     <Card variant='outlined'>
-      <CardHeader title='My Tasks' />
-
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Add New Task
-      </Button>
+      <Box sx={{ display: 'flex', justifyContent: "space-between" }}>
+        <CardHeader title='My Tasks' />
+        <Button
+          variant="contained"
+          sx={{ height: "2.5rem", alignSelf: "center", marginRight: "10px" }}
+          onClick={handleClickOpen}>
+          Add Task
+          <AddIcon />
+        </Button>
+      </Box>
 
       <Dialog
         open={open}
@@ -107,34 +115,29 @@ const ToDoList = () => {
       <CardContent>
         <Stack spacing={1}>
           <Box sx={{ margin: "4px" }}>
-            <FormGroup>
-              <FormControlLabel control={<Checkbox defaultChecked />} label="Task 1" />
-              <FormControlLabel control={<Checkbox />} label="Task 2" />
-              <FormControlLabel control={<Checkbox />} label="Task 3" />
               {tasklist.map((task, index) => (
-                <Box sx={{ margin: "10px" }}>
-                  <Stack direction="row" justifyContent="space-between" spacing={10} alignItems="flex-start">
-                    <Stack direction="column">
-                      <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{task.title}</Typography>
-                      <Typography sx={{ fontSize: '14px' }}>{task.description}</Typography>
-                      <Typography>{task.status}</Typography>
-                    </Stack>
-                    <Stack direction="column">
-                      <Typography sx={{ fontWeight: 'bold' }}>Date</Typography>
-                      <Typography>{task.dueDate}</Typography>
-                    </Stack>
-                    <Stack direction="row" spacing={1}>
-                      <IconButton color="primary">
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton color="secondary">
-                        <DeleteIcon />
-                      </IconButton>
-                    </Stack>
+              <Box sx={{ margin: "10px" }}>
+                <Stack direction="row" justifyContent="space-between" spacing={10} alignItems="flex-start">
+                  <Stack direction="column">
+                    <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{task.title}</Typography>
+                    <Typography sx={{ fontSize: '14px' }}>{task.description}</Typography>
+                    <Button size="small" color={getButtonColor(task.status)}>{task.status}</Button>
                   </Stack>
-                </Box>
-              ))}
-            </FormGroup>
+                  <Stack direction="column">
+                    <Typography sx={{ fontWeight: 'bold' }}>Date</Typography>
+                    <Typography>{task.dueDate}</Typography>
+                  </Stack>
+                  <Stack direction="row" spacing={1}>
+                    <IconButton color="primary">
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton color="secondary">
+                      <DeleteIcon />
+                    </IconButton>
+                  </Stack>
+                </Stack>
+              </Box>
+             ))}
           </Box>
         </Stack>
       </CardContent>
