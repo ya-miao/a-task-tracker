@@ -68,11 +68,23 @@ const TaskDialog = ({ openDialog, setOpenDialog, onAddTask, onEditTask, selected
           <Button onClick={() => {
             onEditTask(selectedTask?.id, form);
             setOpenDialog(false);
+            setForm({
+              title: "",
+              description: "",
+              status: "",
+              dueDate: "",
+            });
           }}>Edit</Button>
           :
           <Button onClick={() => {
             onAddTask(form);
             setOpenDialog(false);
+            setForm({
+              title: "",
+              description: "",
+              status: "",
+              dueDate: "",
+            });
           }}>Add</Button>
         }
       </DialogActions>

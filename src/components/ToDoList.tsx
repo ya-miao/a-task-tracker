@@ -83,7 +83,7 @@ const ToDoList = () => {
     graphqlOperation(subscriptions.onCreateTodo)
   ).subscribe({
     next: ({ provider, value }) => {
-      console.log({ provider, value });
+      // console.log({ provider, value });
       fetchTodos();
     },
     error: (error) => console.warn(error)
@@ -93,7 +93,7 @@ const ToDoList = () => {
     graphqlOperation(subscriptions.onUpdateTodo)
   ).subscribe({
     next: ({ provider, value }) => {
-      console.log({ provider, value });
+      // console.log({ provider, value });
       fetchTodos();
     },
     error: (error) => console.warn(error)
@@ -103,7 +103,7 @@ const ToDoList = () => {
     graphqlOperation(subscriptions.onDeleteTodo)
   ).subscribe({
     next: ({ provider, value }) => {
-      console.log({ provider, value });
+      // console.log({ provider, value });
       fetchTodos();
     },
     error: (error) => console.warn(error)
