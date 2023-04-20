@@ -10,7 +10,7 @@ import TaskTracker from './pages/TaskTracker';
 const App = ({ signOut, user }: any) => {
   return (
     <Authenticator>
-      {({ signOut, user }) => (
+      {({ signOut, user }: any) => (
         <Container sx={{ my: 4 }}>
           <TaskTracker />
         </Container>)}
