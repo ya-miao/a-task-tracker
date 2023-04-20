@@ -121,10 +121,10 @@ const ToDoList = () => {
             </Button>
           </Stack>} />
         <CardContent>
-          <Stack spacing={2} className='task-container'>
+          <Stack spacing={2}>
             <Box>
               {todos?.map((todo: any, index: any) => (
-                <Paper sx={{ m: 2 }} key={index}>
+                <Paper sx={{ m: 2 }} key={index} className='task-container'>
                   <Grid container>
                     <Grid item xs={6}>
                       <Stack direction="column" justifyContent="flex-start" sx={{ m: 2 }}>
@@ -135,8 +135,7 @@ const ToDoList = () => {
                     </Grid>
                     <Grid item xs={4}>
                       <Stack direction="column" sx={{ m: 2 }}>
-                        <Typography variant='overline'>Due Date</Typography>
-                        <Typography>{todo?.dueDate}</Typography>
+                        <Typography variant='overline'>Due Date: {todo?.dueDate}</Typography>
                       </Stack>
                     </Grid>
                     <Grid item xs={2}>
@@ -147,7 +146,7 @@ const ToDoList = () => {
                             setOpen(true);
                           }
                         }>
-                          <EditIcon />
+                        <EditIcon />
                         </IconButton>
                         <IconButton color="error" onClick={
                           () => {
