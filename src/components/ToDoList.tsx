@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, Card, CardHeader, CardContent, Stack, Typography } from "@mui/material";
-import { Button } from "@mui/material";
-// import "./ToDoList.css";
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import { Box, Button, Card, CardHeader, CardContent, Chip, Grid, IconButton, Paper, Stack, Typography } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 import TaskDialog from "./TaskDialog";
 
@@ -15,8 +12,7 @@ import { listTodos } from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
 import * as subscriptions from '../graphql/subscriptions';
 import { GraphQLQuery, GraphQLSubscription } from '@aws-amplify/api';
-import { CreateTodoInput, CreateTodoMutation, DeleteTodoInput, DeleteTodoMutation, UpdateTodoInput, UpdateTodoMutation } from '../API';
-import { OnCreateTodoSubscription, OnUpdateTodoSubscription, OnDeleteTodoSubscription } from '../API';
+import { CreateTodoInput, CreateTodoMutation, DeleteTodoInput, DeleteTodoMutation, OnCreateTodoSubscription, OnDeleteTodoSubscription, OnUpdateTodoSubscription, UpdateTodoInput, UpdateTodoMutation } from '../API';
 
 import awsmobile from "../aws-exports";
 Amplify.configure(awsmobile);
@@ -83,7 +79,6 @@ const ToDoList = () => {
     graphqlOperation(subscriptions.onCreateTodo)
   ).subscribe({
     next: ({ provider, value }) => {
-      // console.log({ provider, value });
       fetchTodos();
     },
     error: (error) => console.warn(error)
@@ -93,7 +88,6 @@ const ToDoList = () => {
     graphqlOperation(subscriptions.onUpdateTodo)
   ).subscribe({
     next: ({ provider, value }) => {
-      // console.log({ provider, value });
       fetchTodos();
     },
     error: (error) => console.warn(error)
@@ -103,7 +97,6 @@ const ToDoList = () => {
     graphqlOperation(subscriptions.onDeleteTodo)
   ).subscribe({
     next: ({ provider, value }) => {
-      // console.log({ provider, value });
       fetchTodos();
     },
     error: (error) => console.warn(error)
@@ -114,58 +107,67 @@ const ToDoList = () => {
   }, []);
 
   return (
-    <Card variant='outlined'>
+    <>
       <TaskDialog openDialog={open} setOpenDialog={setOpen} onAddTask={addTodo} onEditTask={editTodo} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
-      <Box sx={{ display: 'flex', justifyContent: "space-between" }}>
-        <CardHeader title='My Tasks' />
-        <Button
-          variant="contained"
-          sx={{ height: "2.5rem", alignSelf: "center", marginRight: "10px" }}
-          onClick={handleClickOpen}>
-          Add Task
-          <AddIcon />
-        </Button>
-      </Box>
-      <CardContent>
-        <Stack spacing={2}>
-          <Box sx={{ margin: "4px" }}>
-            {todos?.map((todo: any, index: any) => (
-              <Box sx={{ margin: "10px" }} key={index}>
-                <Stack direction="row" justifyContent="space-between" spacing={10} alignItems="flex-start">
-                  <Stack direction="column">
-                    <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>{todo?.title}</Typography>
-                    <Typography sx={{ fontSize: '14px' }}>{todo?.description}</Typography>
-                    <Button size="small">{todo?.status}</Button>
-                  </Stack>
-                  <Stack direction="column">
-                    <Typography sx={{ fontWeight: 'bold' }}>Date</Typography>
-                    <Typography>{todo?.dueDate}</Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={1}>
-                    <IconButton color="primary" onClick={
-                      () => {
-                        console.log('EDIT!');
-                        setSelectedTask(todo);
-                        setOpen(true);
-                      }
-                    }>
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton color="secondary" onClick={
-                      () => {
-                        deleteTodo(todo?.id);
-                      }
-                    }>
-                      <DeleteIcon />
-                    </IconButton>
-                  </Stack>
-                </Stack>
-              </Box>
-            ))}
-          </Box>
-        </Stack>
-      </CardContent>
-    </Card>
+      <Card variant='outlined'>
+        <CardHeader title={
+          <Stack alignContent='center' direction='row' justifyContent='space-between'>
+            <Typography variant='h4'>My Tasks</Typography>
+            <Button
+              variant="contained"
+              onClick={handleClickOpen}>
+              <Stack direction='row' justifyContent='space-between' spacing={2}>
+                <Typography>Add Task</Typography>
+                <AddIcon />
+              </Stack>
+            </Button>
+          </Stack>} />
+        <CardContent>
+          <Stack spacing={2}>
+            <Box>
+              {todos?.map((todo: any, index: any) => (
+                <Paper sx={{ m: 2 }} key={index}>
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <Stack direction="column" justifyContent="flex-start" sx={{ m: 2 }}>
+                        <Typography variant='h6' sx={{ ml: 1  }}>{todo?.title}</Typography>
+                        <Typography variant='body2' sx={{ ml: 1 }}>{todo?.description}</Typography>
+                        <Chip label={todo?.status} variant='outlined' sx={{ width: 120 }} color={todo?.status === 'Complete' ? 'success' : todo?.status === 'In progress' ? 'warning' : 'error'} />
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Stack direction="column" sx={{ m: 2 }}>
+                        <Typography variant='overline'>Due Date</Typography>
+                        <Typography>{todo?.dueDate}</Typography>
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Stack direction="row" spacing={1} sx={{ m: 2 }}>
+                        <IconButton color="warning" onClick={
+                          () => {
+                            setSelectedTask(todo);
+                            setOpen(true);
+                          }
+                        }>
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton color="error" onClick={
+                          () => {
+                            deleteTodo(todo?.id);
+                          }
+                        }>
+                          <DeleteIcon />
+                        </IconButton>
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                </Paper>
+              ))}
+            </Box>
+          </Stack>
+        </CardContent>
+      </Card>
+    </>
   )
 };
 
