@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, Button, Card, CardHeader, CardContent, Chip, Grid, IconButton, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, CardHeader, CardContent, Chip, Grid, IconButton, Paper, Stack, Typography, Tooltip } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TaskDialog from "./TaskDialog";
 
 import { Amplify, API, graphqlOperation } from 'aws-amplify';
@@ -15,6 +18,7 @@ import { GraphQLQuery, GraphQLSubscription } from '@aws-amplify/api';
 import { CreateTodoInput, CreateTodoMutation, DeleteTodoInput, DeleteTodoMutation, OnCreateTodoSubscription, OnDeleteTodoSubscription, OnUpdateTodoSubscription, UpdateTodoInput, UpdateTodoMutation } from '../API';
 
 import awsmobile from "../aws-exports";
+import { width } from '@mui/system';
 Amplify.configure(awsmobile);
 
 const ToDoList = () => {
@@ -107,30 +111,48 @@ const ToDoList = () => {
   return (
     <>
       <TaskDialog openDialog={open} setOpenDialog={setOpen} onAddTask={addTodo} onEditTask={editTodo} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
-      <Card variant='outlined'>
+      <Typography variant='h3' sx={{ textAlign: "center", marginBottom: 2}} fontFamily={"'Bungee Shade', cursive"}>My Tasks</Typography>
+      <Card variant='outlined' sx={{ padding: 2, border: '1px solid black' }}>
         <CardHeader title={
           <Stack alignContent='center' direction='row' justifyContent='space-between'>
-            <Typography variant='h4'>My Tasks</Typography>
+            <FormControl sx={{ width: "30%"}}>
+              <InputLabel>Sort By</InputLabel>
+              <Select
+                label="Sort By"
+              >
+                <MenuItem value='Not started'>Not started</MenuItem>
+                <MenuItem value='In progress'>In progress</MenuItem>
+                <MenuItem value='Complete'>Complete</MenuItem>
+              </Select>
+            </FormControl>
+            <Tooltip title="Add New Task">
+                                   
+                          
             <Button
               variant="contained"
-              onClick={handleClickOpen}>
-              <Stack direction='row' justifyContent='space-between' spacing={2}>
-                <Typography>Add Task</Typography>
+              onClick={handleClickOpen}
+              sx={{borderRadius: "55rem"}}
+              color='info'
+              >
+              {/* <Stack direction='row' justifyContent='space-between' spacing={2}>
+                <Typography>Add Task</Typography> */}
                 <AddIcon />
-              </Stack>
+              {/* </Stack> */}
+
             </Button>
+            </Tooltip>
           </Stack>} />
         <CardContent>
           <Stack spacing={2}>
             <Box>
               {todos?.map((todo: any, index: any) => (
-                <Paper sx={{ m: 2 }} key={index} className='task-container'>
+                <Paper key={index} className='task-container' sx={{ padding: 2, mb: 2}}>
                   <Grid container>
                     <Grid item xs={6}>
-                      <Stack direction="column" justifyContent="flex-start" sx={{ m: 2 }} spacing={1}>
+                      <Stack direction="column" justifyContent="flex-start" spacing={1}>
                         <Typography variant='h5' sx={{ }}>{todo?.title}</Typography>
                         <Typography variant='body2' sx={{ ml: 1}}>{todo?.description}</Typography>
-                        <Chip label={todo?.status} variant='outlined' sx={{ width: 120 }} color={todo?.status === 'Complete' ? 'success' : todo?.status === 'In progress' ? 'warning' : 'error'} />
+                        <Chip label={todo?.status} variant='filled' sx={{ width: 120 }} color={todo?.status === 'Complete' ? 'success' : todo?.status === 'In progress' ? 'warning' : 'error'} />
                       </Stack>
                     </Grid>
                     <Grid item xs={4}>
@@ -140,7 +162,7 @@ const ToDoList = () => {
                     </Grid>
                     <Grid item xs={2}>
                       <Stack direction="row" spacing={1} sx={{ m: 2 }} className='showOnHover'>
-                        <IconButton color="warning" onClick={
+                        <IconButton onClick={
                           () => {
                             setSelectedTask(todo);
                             setOpen(true);
@@ -148,7 +170,7 @@ const ToDoList = () => {
                         }>
                         <EditIcon />
                         </IconButton>
-                        <IconButton color="error" onClick={
+                        <IconButton onClick={
                           () => {
                             deleteTodo(todo?.id);
                           }

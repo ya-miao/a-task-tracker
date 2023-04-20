@@ -11,6 +11,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* background-color: #fffef2; */
+  background-color: #F6EEE0;
 }
 
 code {
@@ -30,3 +32,5 @@ code {
 .task-container:hover .showOnHover {
   opacity: 1.0;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap');
