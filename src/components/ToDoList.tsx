@@ -121,7 +121,7 @@ const ToDoList = () => {
             </Button>
           </Stack>} />
         <CardContent>
-          <Stack spacing={2}>
+          <Stack spacing={2} className='task-container'>
             <Box>
               {todos?.map((todo: any, index: any) => (
                 <Paper sx={{ m: 2 }} key={index}>
@@ -140,7 +140,7 @@ const ToDoList = () => {
                       </Stack>
                     </Grid>
                     <Grid item xs={2}>
-                      <Stack direction="row" spacing={1} sx={{ m: 2 }}>
+                      <Stack direction="row" spacing={1} sx={{ m: 2 }} className='showOnHover'>
                         <IconButton color="warning" onClick={
                           () => {
                             setSelectedTask(todo);
