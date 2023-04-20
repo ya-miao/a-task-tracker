@@ -127,9 +127,9 @@ const ToDoList = () => {
                 <Paper sx={{ m: 2 }} key={index} className='task-container'>
                   <Grid container>
                     <Grid item xs={6}>
-                      <Stack direction="column" justifyContent="flex-start" sx={{ m: 2 }}>
-                        <Typography variant='h6' sx={{ ml: 1  }}>{todo?.title}</Typography>
-                        <Typography variant='body2' sx={{ ml: 1 }}>{todo?.description}</Typography>
+                      <Stack direction="column" justifyContent="flex-start" sx={{ m: 2 }} spacing={1}>
+                        <Typography variant='h5' sx={{ }}>{todo?.title}</Typography>
+                        <Typography variant='body2' sx={{ ml: 1}}>{todo?.description}</Typography>
                         <Chip label={todo?.status} variant='outlined' sx={{ width: 120 }} color={todo?.status === 'Complete' ? 'success' : todo?.status === 'In progress' ? 'warning' : 'error'} />
                       </Stack>
                     </Grid>

@@ -90,13 +90,13 @@ const TaskDialog = ({ openDialog, setOpenDialog, onAddTask, onEditTask, selected
       <DialogTitle>{selectedTask ? 'Edit Task' : 'Add Task'}</DialogTitle>
       <DialogContent>
         <Stack spacing={1} sx={{ m: 2 }}>
-          <TextField defaultValue={selectedTask?.title} label="Task" variant="outlined" name="title" onChange={handleInputChange} />
+          <TextField defaultValue={selectedTask?.title} label="Task" variant="outlined" name="title" onChange={handleInputChange}/>
           <TextField defaultValue={selectedTask?.description} label="Description" variant="outlined" name="description" onChange={handleInputChange} />
           <Box >
             <FormControl fullWidth>
               <InputLabel>Status</InputLabel>
               <Select
-                value={status}
+                value={selectedTask?.status}
                 label="Status"
                 onChange={handleStatusChange}
               >
@@ -116,7 +116,6 @@ const TaskDialog = ({ openDialog, setOpenDialog, onAddTask, onEditTask, selected
               />
               :
               <DatePicker
-                value={new Date()}
                 minDate={new Date()}
                 label="Due Date"
                 format="MM/dd/yyyy"
