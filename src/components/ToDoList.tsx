@@ -42,7 +42,7 @@ const ToDoList = () => {
         graphqlOperation(mutations.createTodo, { input: taskInput })
       );
     } catch (err) {
-      console.log('error creating todo:', err)
+      console.log(err)
     }
   }
 
@@ -53,13 +53,12 @@ const ToDoList = () => {
         variables: { input: { id: taskId } }
       });
     } catch (err) {
-      console.log('error deleting todo:', err)
+      console.log(err)
     }
   }
 
   const editTodo = async (taskId: any, taskInput: any) => {
     try {
-      console.log('Trying...')
       const updatedTodo = await API.graphql<GraphQLQuery<UpdateTodoMutation>>({
         query: mutations.updateTodo,
         variables: {
@@ -69,9 +68,8 @@ const ToDoList = () => {
           }
         }
       });
-      console.log('Succeeded!');
     } catch (err) {
-      console.log('error updating todo:', err)
+      console.log(err)
     }
   }
 
