@@ -3,13 +3,18 @@ import './App.css';
 
 import { Container } from '@mui/material';
 
+import { Authenticator } from '@aws-amplify/ui-react';
+
 import TaskTracker from './pages/TaskTracker';
 
-function App() {
+const App = ({ signOut, user }: any) => {
   return (
-    <Container sx={{ my: 4 }}>
-      <TaskTracker />
-    </Container>
+    <Authenticator>
+      {({ signOut, user }) => (
+        <Container sx={{ my: 4 }}>
+          <TaskTracker />
+        </Container>)}
+    </Authenticator>
   );
 }
 

@@ -1,19 +1,22 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-tasktracker-dev-224636-authRole",
-      "UnauthRoleArn": "arn:aws:iam::028503884831:role/amplify-tasktracker-dev-224636-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::028503884831:role/amplify-tasktracker-dev-224636-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-tasktracker-dev-224636-deployment",
-      "UnauthRoleName": "amplify-tasktracker-dev-224636-unauthRole",
-      "StackName": "amplify-tasktracker-dev-224636",
-      "StackId": "arn:aws:cloudformation:us-east-1:028503884831:stack/amplify-tasktracker-dev-224636/3df4ae50-dd93-11ed-b7eb-12b5f657b2a1",
-      "AmplifyAppId": "d1v53nznd7b9u6"
+      "AuthRoleName": "amplify-tasktracker-dev-90027-authRole",
+      "UnauthRoleArn": "arn:aws:iam::810036735283:role/amplify-tasktracker-dev-90027-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::810036735283:role/amplify-tasktracker-dev-90027-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-tasktracker-dev-90027-deployment",
+      "UnauthRoleName": "amplify-tasktracker-dev-90027-unauthRole",
+      "StackName": "amplify-tasktracker-dev-90027",
+      "StackId": "arn:aws:cloudformation:us-east-2:810036735283:stack/amplify-tasktracker-dev-90027/53b1dc10-df7b-11ed-9923-02d5271e3fb5",
+      "AmplifyAppId": "d1k8dokfdo58j9"
     },
     "categories": {
       "api": {
         "tasktracker": {}
+      },
+      "auth": {
+        "tasktrackera2be0f63": {}
       }
     }
   }
