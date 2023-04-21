@@ -111,8 +111,8 @@ const ToDoList = () => {
   return (
     <>
       <TaskDialog openDialog={open} setOpenDialog={setOpen} onAddTask={addTodo} onEditTask={editTodo} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
-      <Typography variant='h3' sx={{ textAlign: "center", marginBottom: 2}} fontFamily={"'Bungee Shade', cursive"}>My Tasks</Typography>
       <Card variant='outlined' sx={{ padding: 2, border: '1px solid black' }}>
+      <Typography variant='h3' sx={{ textAlign: "center", marginBottom: 2}} fontFamily={"'Bungee Shade', cursive"}>My Tasks</Typography>
         <CardHeader title={
           <Stack alignContent='center' direction='row' justifyContent='space-between'>
             <FormControl sx={{ width: "30%"}}>
