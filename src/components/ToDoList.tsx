@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
+// TASK - import
+import { Auth } from 'aws-amplify';
+// TASK - end
+
 import { Box, Button, Card, CardHeader, CardContent, Chip, Grid, IconButton, Paper, Stack, Typography, Tooltip } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -25,10 +29,14 @@ Amplify.configure(awsmobile);
 
 const ToDoList = () => {
 
+  const [userId, setUserId] = useState("");
+
   const [open, setOpen] = useState(false);
 
   const [todos, setTodos] = useState<any>([]);
   const [selectedTask, setSelectedTask] = useState(null);
+
+  const [userTodos, setUserTodos] = useState([]);
 
   const sortData = (e: any) => {
     setTodos(todos.sort((a: any, b: any) => {
@@ -65,7 +73,12 @@ const ToDoList = () => {
   const addTodo = async (taskInput: any) => {
     try {
       const newTodo = await API.graphql<GraphQLQuery<CreateTodoMutation>>(
-        graphqlOperation(mutations.createTodo, { input: taskInput })
+        graphqlOperation(mutations.createTodo, {
+          input: {
+            ...taskInput,
+            user: userId
+          }
+        })
       );
     } catch (err) {
       console.log(err)
@@ -90,7 +103,8 @@ const ToDoList = () => {
         variables: {
           input: {
             id: taskId,
-            ...taskInput
+            ...taskInput,
+            user: userId,
           }
         }
       });
@@ -99,44 +113,67 @@ const ToDoList = () => {
     }
   }
 
-  const subCreate = API.graphql<GraphQLSubscription<OnCreateTodoSubscription>>(
-    graphqlOperation(subscriptions.onCreateTodo)
-  ).subscribe({
-    next: ({ provider, value }) => {
-      fetchTodos();
-    },
-    error: (error) => console.warn(error)
-  });
-
-  const subUpdate = API.graphql<GraphQLSubscription<OnUpdateTodoSubscription>>(
-    graphqlOperation(subscriptions.onUpdateTodo)
-  ).subscribe({
-    next: ({ provider, value }) => {
-      fetchTodos();
-    },
-    error: (error) => console.warn(error)
-  });
-
-  const subDelete = API.graphql<GraphQLSubscription<OnDeleteTodoSubscription>>(
-    graphqlOperation(subscriptions.onDeleteTodo)
-  ).subscribe({
-    next: ({ provider, value }) => {
-      fetchTodos();
-    },
-    error: (error) => console.warn(error)
-  });
+  const getUserTodos = () => {
+    const findUserTodos = todos.filter((todo: any) => todo?.user === userId)
+    setUserTodos(findUserTodos);
+  }
 
   useEffect(() => {
+    const subCreate = API.graphql<GraphQLSubscription<OnCreateTodoSubscription>>(
+      graphqlOperation(subscriptions.onCreateTodo)
+    ).subscribe({
+      next: ({ provider, value }) => {
+        fetchTodos();
+      },
+      error: (error) => console.warn(error)
+    });
+
+    const subUpdate = API.graphql<GraphQLSubscription<OnUpdateTodoSubscription>>(
+      graphqlOperation(subscriptions.onUpdateTodo)
+    ).subscribe({
+      next: ({ provider, value }) => {
+        fetchTodos();
+      },
+      error: (error) => console.warn(error)
+    });
+
+    const subDelete = API.graphql<GraphQLSubscription<OnDeleteTodoSubscription>>(
+      graphqlOperation(subscriptions.onDeleteTodo)
+    ).subscribe({
+      next: ({ provider, value }) => {
+        fetchTodos();
+      },
+      error: (error) => console.warn(error)
+    });
+
+    const cleanupSubscriptions = () => {
+      subCreate.unsubscribe();
+      subUpdate.unsubscribe();
+      subDelete.unsubscribe();
+    }
+  
+  }, [])
+
+  const getUserInfo = async () => {
+    const { attributes } = await Auth.currentAuthenticatedUser();
+    const currentUser = attributes?.sub;
+    setUserId(currentUser);
+  };
+
+  
+  useEffect(() => {
+    getUserInfo();
     fetchTodos();
-    console.log(todos, "calls")
   }, []);
 
+
   useEffect(() => {
-  }, [todos]);
+    getUserTodos();
+  }, [todos, userId])
 
   return (
     <>
-      <TaskDialog openDialog={open} setOpenDialog={setOpen} onAddTask={addTodo} onEditTask={editTodo} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
+      <TaskDialog userId={userId} openDialog={open} setOpenDialog={setOpen} onAddTask={addTodo} onEditTask={editTodo} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
       <Grid container spacing={4}>
         <Grid item xs={8}>
           <Card variant='outlined' sx={{ padding: 2, border: '1px solid black' }}>
@@ -167,7 +204,8 @@ const ToDoList = () => {
             <CardContent>
               <Stack spacing={2}>
                 <Box>
-                  {todos?.map((todo: any, index: any) => (
+                  {/* {todos?.map((todo: any, index: any) => ( */}
+                  {userTodos?.map((todo: any, index: any) => (
                     <Paper key={index} className='task-container' sx={{ padding: 2, mb: 2 }}>
                       <Grid container>
                         <Grid item xs={6}>
@@ -210,7 +248,7 @@ const ToDoList = () => {
           </Card>
         </Grid>
         <Grid item xs={4}>
-          <Sidebar taskList={todos} />
+          <Sidebar taskList={userTodos} />
         </Grid>
       </Grid>
     </>

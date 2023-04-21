@@ -12,6 +12,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import e from "express";
 
 interface TaskDialogProps {
+  userId: any,
   openDialog: any,
   setOpenDialog: any,
   onAddTask: any,
@@ -23,6 +24,7 @@ interface TaskDialogProps {
 const TaskDialog = ({ openDialog, setOpenDialog, onAddTask, onEditTask, selectedTask, setSelectedTask }: TaskDialogProps) => {
 
   const [status, setStatus] = React.useState('');
+  
   const handleStatusChange = (event: SelectChangeEvent) => {
     setStatus(event.target.value as string);
     setForm({
@@ -77,7 +79,7 @@ const TaskDialog = ({ openDialog, setOpenDialog, onAddTask, onEditTask, selected
       description: selectedTask.description,
       status: selectedTask.status,
       dueDate: selectedTask.dueDate,
-    });;
+    });
 
   }, [selectedTask]);
 

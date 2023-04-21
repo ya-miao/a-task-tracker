@@ -6,6 +6,7 @@ export const getTodo = /* GraphQL */ `
   query GetTodo($id: ID!) {
     getTodo(id: $id) {
       id
+      user
       title
       description
       status
@@ -24,6 +25,7 @@ export const listTodos = /* GraphQL */ `
     listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        user
         title
         description
         status
