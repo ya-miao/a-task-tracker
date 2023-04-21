@@ -1,17 +1,22 @@
 import { useState, useEffect } from "react";
 
-import { Stack, Typography, Divider, Box } from "@mui/material";
-import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from "@mui/material";
+import { Stack, Typography, Divider } from "@mui/material";
 
 interface SidebarProps {
   taskList: any,
 }
 
-const Sidebar = ({ taskList } : SidebarProps) => {
+const Sidebar = ({ taskList }: SidebarProps) => {
 
-  const [ tasksCompleted, setTasksCompleted ] = useState(0);
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  
+  const today = new Date();
+  const todaysDate = `${dayNames[today.getDay()]}, ${monthNames[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
 
-  useEffect(() =>{
+  const [tasksCompleted, setTasksCompleted] = useState(0);
+
+  useEffect(() => {
     const numOfCompletedTasks = taskList.filter((item: any) =>
       item?.status === 'Complete'
     ).length;
@@ -21,24 +26,10 @@ const Sidebar = ({ taskList } : SidebarProps) => {
   return (
     <Stack spacing={4}>
       <Divider >TODAY'S DATE</Divider>
-        <Typography className = "heading" sx={{ margin: "20px"}} variant="h2" fontFamily={"'Bungee Shade', cursive"}>Wed, March 29 2023</Typography>
-      {/*<Divider>View</Divider>
-         <Typography>Sort By / Radio buttons</Typography>
-        <FormControl>
-          <FormLabel>Sort By</FormLabel>
-          <RadioGroup
-            aria-labelledby="radio-buttons-group-label"
-            defaultValue="due"
-            name="radio-buttons-group"
-          >
-            <FormControlLabel value="due" control={<Radio />} label="Soonest Due" />
-            <FormControlLabel value="title" control={<Radio />} label="Title" />
-            <FormControlLabel value="status" control={<Radio />} label="Status" />
-          </RadioGroup>
-        </FormControl> */}
+      <Typography className="heading" sx={{ margin: "20px" }} variant="h2" fontFamily={"'Bungee Shade', cursive"}>{todaysDate}</Typography>
       <Divider>PROGRESS</Divider>
-        <Typography className = "heading" variant = "h2" fontFamily={"'Bungee Shade', cursive"}>{tasksCompleted}</Typography>
-        <Typography className = "heading" variant = "h6">{tasksCompleted !== 1 ? 'Tasks Completed' : 'Task Completed'}</Typography>
+      <Typography className="heading" variant="h2" fontFamily={"'Bungee Shade', cursive"}>{tasksCompleted}</Typography>
+      <Typography className="heading" variant="h6">{tasksCompleted !== 1 ? 'Tasks Completed' : 'Task Completed'}</Typography>
     </Stack>
   )
 };
