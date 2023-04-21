@@ -1,7 +1,23 @@
+import { useState, useEffect } from "react";
+
 import { Stack, Typography, Divider, Box } from "@mui/material";
 import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from "@mui/material";
 
-const Sidebar = () => {
+interface SidebarProps {
+  taskList: any,
+}
+
+const Sidebar = ({ taskList } : SidebarProps) => {
+
+  const [ tasksCompleted, setTasksCompleted ] = useState(0);
+
+  useEffect(() =>{
+    const numOfCompletedTasks = taskList.filter((item: any) =>
+      item?.status === 'Complete'
+    ).length;
+    setTasksCompleted(numOfCompletedTasks);
+  }, [taskList]);
+
   return (
     <Stack spacing={4}>
       <Divider >TODAY'S DATE</Divider>
@@ -21,8 +37,8 @@ const Sidebar = () => {
           </RadioGroup>
         </FormControl> */}
       <Divider>PROGRESS</Divider>
-        <Typography className = "heading" variant = "h2" fontFamily={"'Bungee Shade', cursive"}>2</Typography>
-        <Typography className = "heading" variant = "h6">Task Completed!</Typography>
+        <Typography className = "heading" variant = "h2" fontFamily={"'Bungee Shade', cursive"}>{tasksCompleted}</Typography>
+        <Typography className = "heading" variant = "h6">{tasksCompleted !== 1 ? 'Tasks Completed' : 'Task Completed'}</Typography>
     </Stack>
   )
 };
