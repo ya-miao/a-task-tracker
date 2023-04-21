@@ -1,17 +1,11 @@
 // @ts-nocheck
-import React, { useEffect, useState } from 'react';
-// TASK - import
+import { useEffect, useState } from 'react';
 import { Auth } from 'aws-amplify';
-// TASK - end
 
-import { Box, Button, Card, CardHeader, CardContent, Chip, Grid, IconButton, Paper, Stack, Typography, Tooltip } from "@mui/material";
+import { Box, Button, Card, CardHeader, CardContent, Chip, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Stack, Typography, Tooltip } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import TaskDialog from "./TaskDialog";
 import Sidebar from './Sidebar';
@@ -24,11 +18,9 @@ import { GraphQLQuery, GraphQLSubscription } from '@aws-amplify/api';
 import { CreateTodoInput, CreateTodoMutation, DeleteTodoInput, DeleteTodoMutation, OnCreateTodoSubscription, OnDeleteTodoSubscription, OnUpdateTodoSubscription, UpdateTodoInput, UpdateTodoMutation } from '../API';
 
 import awsmobile from "../aws-exports";
-import { width } from '@mui/system';
 Amplify.configure(awsmobile);
 
 const ToDoList = () => {
-
   const [userId, setUserId] = useState("");
 
   const [open, setOpen] = useState(false);
@@ -38,27 +30,6 @@ const ToDoList = () => {
 
   const [userTodos, setUserTodos] = useState<any>([]);
 
-  // TASK
-  // const sortData = (e: any) => {
-  //   setTodos(todos.sort((a: any, b: any) => {
-  //     if (e.target.id === 'title') {
-  //       if (a.title < b.title) {
-  //         return -1;
-  //       }
-  //     }
-  //     if (e.target.id === 'status') {
-  //       if (a.status < b.status) {
-  //         return -1;
-  //       }
-  //     }
-  //     if (e.target.id === 'dueDate') {
-  //       return +new Date(a.dueDate) - +new Date(b.dueDate);
-  //     }
-  //   })
-  //   )
-  //   console.log(todos, "sort by", e.target.id)
-  // };
-  //
   const sortData = (e: any) => {
     const newTodos = [...userTodos];
     setUserTodos(newTodos.sort((a: any, b: any) => {
@@ -79,7 +50,6 @@ const ToDoList = () => {
     )
     console.log(userTodos, "sort by", e.target.id)
   };
-  // TASK - end
 
   const handleClickOpen = () => {
     setOpen(true);

@@ -1,6 +1,5 @@
-import { Button, Grid, Stack } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Sidebar from "../components/Sidebar";
 import ToDoList from "../components/ToDoList";
 import { Auth } from 'aws-amplify';
 
@@ -14,7 +13,7 @@ const TaskTracker = () => {
   }
 
   return (
-    <Stack>
+    <Stack sx={{ mt: 2 }}>
        <button onClick={signOut} className="signout-btn">Sign Out
           <AccountCircleIcon sx={{marginLeft: "3px"}}/>
       </button>
