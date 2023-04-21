@@ -30,14 +30,24 @@ const ToDoList = () => {
   const [todos, setTodos] = useState<any>([]);
   const [selectedTask, setSelectedTask] = useState(null);
 
-  const sortData = () => {
-    setTodos(todos.sort((a:any, b:any) => {
-      if (a.title < b.title) {
-        return -1;
+  const sortData = (e: any) => {
+    setTodos(todos.sort((a: any, b: any) => {
+      if (e.target.id === 'title') {
+        if (a.title < b.title) {
+          return -1;
+        }
+      }
+      if (e.target.id === 'status') {
+        if (a.status < b.status) {
+          return -1;
+        }
+      }
+      if (e.target.id === 'dueDate') {
+        return +new Date(a.dueDate) - +new Date(b.dueDate);
       }
     })
     )
-    console.log(todos, "calling from here")
+    console.log(todos, "sort by", e.target.id)
   };
 
   const handleClickOpen = () => {
@@ -118,7 +128,11 @@ const ToDoList = () => {
 
   useEffect(() => {
     fetchTodos();
+    console.log(todos, "calls")
   }, []);
+
+  useEffect(() => {
+  }, [todos]);
 
   return (
     <>
@@ -134,9 +148,9 @@ const ToDoList = () => {
                   <Select
                     label="Sort By"
                   >
-                    <MenuItem value='Title' onClick={sortData}>Title</MenuItem>
-                    <MenuItem value='In progress'>Status</MenuItem>
-                    <MenuItem value='Complete'>Due Date</MenuItem>
+                    <MenuItem value='Title' id='title' onClick={e => sortData(e)}>Title</MenuItem>
+                    <MenuItem value='In progress' id='status' onClick={(e) => sortData(e)}>Status</MenuItem>
+                    <MenuItem value='Complete' id='dueDate' onClick={(e) => sortData(e)}>Due Date</MenuItem>
                   </Select>
                 </FormControl>
                 <Tooltip title="Add New Task">
