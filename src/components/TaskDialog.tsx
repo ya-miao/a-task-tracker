@@ -24,7 +24,7 @@ interface TaskDialogProps {
 const TaskDialog = ({ openDialog, setOpenDialog, onAddTask, onEditTask, selectedTask, setSelectedTask }: TaskDialogProps) => {
 
   const [status, setStatus] = React.useState('');
-  
+
   const handleStatusChange = (event: SelectChangeEvent) => {
     setStatus(event.target.value as string);
     setForm({
@@ -138,6 +138,7 @@ const TaskDialog = ({ openDialog, setOpenDialog, onAddTask, onEditTask, selected
               status: "",
               dueDate: "",
             });
+            setSelectedTask(null);
           }}>Edit</Button>
           :
           <Button onClick={() => {
@@ -149,6 +150,7 @@ const TaskDialog = ({ openDialog, setOpenDialog, onAddTask, onEditTask, selected
               status: "",
               dueDate: "",
             });
+            setSelectedTask(null);
           }}>Add</Button>
         }
       </DialogActions>
