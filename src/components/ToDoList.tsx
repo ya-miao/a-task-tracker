@@ -30,6 +30,16 @@ const ToDoList = () => {
   const [todos, setTodos] = useState<any>([]);
   const [selectedTask, setSelectedTask] = useState(null);
 
+  const sortData = () => {
+    setTodos(todos.sort((a:any, b:any) => {
+      if (a.title < b.title) {
+        return -1;
+      }
+    })
+    )
+    console.log(todos, "calling from here")
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -124,9 +134,9 @@ const ToDoList = () => {
                   <Select
                     label="Sort By"
                   >
-                    <MenuItem value='Not started'>Not started</MenuItem>
-                    <MenuItem value='In progress'>In progress</MenuItem>
-                    <MenuItem value='Complete'>Complete</MenuItem>
+                    <MenuItem value='Title' onClick={sortData}>Title</MenuItem>
+                    <MenuItem value='In progress'>Status</MenuItem>
+                    <MenuItem value='Complete'>Due Date</MenuItem>
                   </Select>
                 </FormControl>
                 <Tooltip title="Add New Task">
