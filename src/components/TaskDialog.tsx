@@ -96,7 +96,7 @@ const TaskDialog = ({ openDialog, setOpenDialog, onAddTask, onEditTask, selected
             <FormControl fullWidth>
               <InputLabel>Status</InputLabel>
               <Select
-                value={selectedTask?.status}
+                defaultValue={selectedTask?.status}
                 label="Status"
                 onChange={handleStatusChange}
               >
