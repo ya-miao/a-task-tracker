@@ -36,10 +36,31 @@ const ToDoList = () => {
   const [todos, setTodos] = useState<any>([]);
   const [selectedTask, setSelectedTask] = useState(null);
 
-  const [userTodos, setUserTodos] = useState([]);
+  const [userTodos, setUserTodos] = useState<any>([]);
 
+  // TASK
+  // const sortData = (e: any) => {
+  //   setTodos(todos.sort((a: any, b: any) => {
+  //     if (e.target.id === 'title') {
+  //       if (a.title < b.title) {
+  //         return -1;
+  //       }
+  //     }
+  //     if (e.target.id === 'status') {
+  //       if (a.status < b.status) {
+  //         return -1;
+  //       }
+  //     }
+  //     if (e.target.id === 'dueDate') {
+  //       return +new Date(a.dueDate) - +new Date(b.dueDate);
+  //     }
+  //   })
+  //   )
+  //   console.log(todos, "sort by", e.target.id)
+  // };
+  //
   const sortData = (e: any) => {
-    setTodos(todos.sort((a: any, b: any) => {
+    setUserTodos(userTodos.sort((a: any, b: any) => {
       if (e.target.id === 'title') {
         if (a.title < b.title) {
           return -1;
@@ -55,8 +76,9 @@ const ToDoList = () => {
       }
     })
     )
-    console.log(todos, "sort by", e.target.id)
+    console.log(userTodos, "sort by", e.target.id)
   };
+  // TASK - end
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -185,7 +207,7 @@ const ToDoList = () => {
                   <Select
                     label="Sort By"
                   >
-                    <MenuItem value='Title' id='title' onClick={e => sortData(e)}>Title</MenuItem>
+                    <MenuItem value='Title' id='title' onClick={(e) => sortData(e)}>Title</MenuItem>
                     <MenuItem value='In progress' id='status' onClick={(e) => sortData(e)}>Status</MenuItem>
                     <MenuItem value='Complete' id='dueDate' onClick={(e) => sortData(e)}>Due Date</MenuItem>
                   </Select>
@@ -204,7 +226,6 @@ const ToDoList = () => {
             <CardContent>
               <Stack spacing={2}>
                 <Box>
-                  {/* {todos?.map((todo: any, index: any) => ( */}
                   {userTodos?.map((todo: any, index: any) => (
                     <Paper key={index} className='task-container' sx={{ padding: 2, mb: 2 }}>
                       <Grid container>
