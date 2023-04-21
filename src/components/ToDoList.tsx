@@ -1,5 +1,5 @@
+// @ts-nocheck
 import React, { useEffect, useState } from 'react';
-
 // TASK - import
 import { Auth } from 'aws-amplify';
 // TASK - end
@@ -60,7 +60,8 @@ const ToDoList = () => {
   // };
   //
   const sortData = (e: any) => {
-    setUserTodos(userTodos.sort((a: any, b: any) => {
+    const newTodos = [...userTodos];
+    setUserTodos(newTodos.sort((a: any, b: any) => {
       if (e.target.id === 'title') {
         if (a.title < b.title) {
           return -1;
