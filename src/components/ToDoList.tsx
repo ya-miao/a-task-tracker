@@ -8,7 +8,9 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+
 import TaskDialog from "./TaskDialog";
+import Sidebar from './Sidebar';
 
 import { Amplify, API, graphqlOperation } from 'aws-amplify';
 import { listTodos } from '../graphql/queries';
@@ -111,81 +113,82 @@ const ToDoList = () => {
   return (
     <>
       <TaskDialog openDialog={open} setOpenDialog={setOpen} onAddTask={addTodo} onEditTask={editTodo} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
-      <Card variant='outlined' sx={{ padding: 2, border: '1px solid black' }}>
-      <Typography variant='h3' sx={{ textAlign: "center", marginBottom: 2}} fontFamily={"'Bungee Shade', cursive"}>My Tasks</Typography>
-        <CardHeader title={
-          <Stack alignContent='center' direction='row' justifyContent='space-between'>
-            <FormControl sx={{ width: "30%"}}>
-              <InputLabel>Sort By</InputLabel>
-              <Select
-                label="Sort By"
-              >
-                <MenuItem value='Not started'>Not started</MenuItem>
-                <MenuItem value='In progress'>In progress</MenuItem>
-                <MenuItem value='Complete'>Complete</MenuItem>
-              </Select>
-            </FormControl>
-            <Tooltip title="Add New Task">
-                                   
-                          
-            <Button
-              variant="contained"
-              onClick={handleClickOpen}
-              sx={{borderRadius: "55rem"}}
-              color='info'
-              >
-              {/* <Stack direction='row' justifyContent='space-between' spacing={2}>
-                <Typography>Add Task</Typography> */}
-                <AddIcon />
-              {/* </Stack> */}
-
-            </Button>
-            </Tooltip>
-          </Stack>} />
-        <CardContent>
-          <Stack spacing={2}>
-            <Box>
-              {todos?.map((todo: any, index: any) => (
-                <Paper key={index} className='task-container' sx={{ padding: 2, mb: 2}}>
-                  <Grid container>
-                    <Grid item xs={6}>
-                      <Stack direction="column" justifyContent="flex-start" spacing={1}>
-                        <Typography variant='h5'>{todo?.title}</Typography>
-                        <Typography variant='body2' sx={{ ml: 1}}>{todo?.description}</Typography>
-                        <Chip label={todo?.status} variant='filled' sx={{ width: 120 }} color={todo?.status === 'Complete' ? 'success' : todo?.status === 'In progress' ? 'warning' : 'error'} />
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={4}>
-                      <Stack direction="column">
-                        <Typography variant='overline'>Due Date: {todo?.dueDate}</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={2}>
-                      <Stack direction="row" spacing={1} className='showOnHover'>
-                        <IconButton onClick={
-                          () => {
-                            setSelectedTask(todo);
-                            setOpen(true);
-                          }
-                        }>
-                        <EditIcon />
-                        </IconButton>
-                        <IconButton onClick={
-                          () => {
-                            deleteTodo(todo?.id);
-                          }
-                        }>
-                          <DeleteIcon />
-                        </IconButton>
-                      </Stack>
-                    </Grid>
-                  </Grid>
-                </Paper>
-              ))}
-            </Box>
-          </Stack>
-        </CardContent>
-      </Card>
+      <Grid container spacing={4}>
+        <Grid item xs={8}>
+          <Card variant='outlined' sx={{ padding: 2, border: '1px solid black' }}>
+            <Typography variant='h3' sx={{ textAlign: "center", marginBottom: 2 }} fontFamily={"'Bungee Shade', cursive"}>My Tasks</Typography>
+            <CardHeader title={
+              <Stack alignContent='center' direction='row' justifyContent='space-between'>
+                <FormControl sx={{ width: "30%" }}>
+                  <InputLabel>Sort By</InputLabel>
+                  <Select
+                    label="Sort By"
+                  >
+                    <MenuItem value='Not started'>Not started</MenuItem>
+                    <MenuItem value='In progress'>In progress</MenuItem>
+                    <MenuItem value='Complete'>Complete</MenuItem>
+                  </Select>
+                </FormControl>
+                <Tooltip title="Add New Task">
+                  <Button
+                    variant="contained"
+                    onClick={handleClickOpen}
+                    sx={{ borderRadius: "55rem" }}
+                    color='info'
+                  >
+                    <AddIcon />
+                  </Button>
+                </Tooltip>
+              </Stack>} />
+            <CardContent>
+              <Stack spacing={2}>
+                <Box>
+                  {todos?.map((todo: any, index: any) => (
+                    <Paper key={index} className='task-container' sx={{ padding: 2, mb: 2 }}>
+                      <Grid container>
+                        <Grid item xs={6}>
+                          <Stack direction="column" justifyContent="flex-start" spacing={1}>
+                            <Typography variant='h5' sx={{}}>{todo?.title}</Typography>
+                            <Typography variant='body2' sx={{ ml: 1 }}>{todo?.description}</Typography>
+                            <Chip label={todo?.status} variant='filled' sx={{ width: 120 }} color={todo?.status === 'Complete' ? 'success' : todo?.status === 'In progress' ? 'warning' : 'error'} />
+                          </Stack>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <Stack direction="column" sx={{ m: 2 }}>
+                            <Typography variant='overline'>Due Date: {todo?.dueDate}</Typography>
+                          </Stack>
+                        </Grid>
+                        <Grid item xs={2}>
+                          <Stack direction="row" spacing={1} sx={{ m: 2 }} className='showOnHover'>
+                            <IconButton onClick={
+                              () => {
+                                setSelectedTask(todo);
+                                setOpen(true);
+                              }
+                            }>
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton onClick={
+                              () => {
+                                deleteTodo(todo?.id);
+                              }
+                            }>
+                              <DeleteIcon />
+                            </IconButton>
+                          </Stack>
+                        </Grid>
+                      </Grid>
+                    </Paper>
+                  ))}
+                </Box>
+              </Stack>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={4}>
+          <Sidebar taskList={todos} />
+        </Grid>
+      </Grid>
     </>
   )
 };
