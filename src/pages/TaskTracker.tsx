@@ -18,7 +18,7 @@ const TaskTracker = () => {
        <button onClick={signOut} className="signout-btn">Sign Out
           <AccountCircleIcon sx={{marginLeft: "3px"}}/>
       </button>
-      <Grid container spacing={4}>
+      <Grid container spacing={4} mt={3}>
         <ToDoList />
       </Grid>
     </Stack >
