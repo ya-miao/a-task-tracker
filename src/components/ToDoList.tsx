@@ -150,18 +150,18 @@ const ToDoList = () => {
                   <Grid container>
                     <Grid item xs={6}>
                       <Stack direction="column" justifyContent="flex-start" spacing={1}>
-                        <Typography variant='h5' sx={{ }}>{todo?.title}</Typography>
+                        <Typography variant='h5'>{todo?.title}</Typography>
                         <Typography variant='body2' sx={{ ml: 1}}>{todo?.description}</Typography>
                         <Chip label={todo?.status} variant='filled' sx={{ width: 120 }} color={todo?.status === 'Complete' ? 'success' : todo?.status === 'In progress' ? 'warning' : 'error'} />
                       </Stack>
                     </Grid>
                     <Grid item xs={4}>
-                      <Stack direction="column" sx={{ m: 2 }}>
+                      <Stack direction="column">
                         <Typography variant='overline'>Due Date: {todo?.dueDate}</Typography>
                       </Stack>
                     </Grid>
                     <Grid item xs={2}>
-                      <Stack direction="row" spacing={1} sx={{ m: 2 }} className='showOnHover'>
+                      <Stack direction="row" spacing={1} className='showOnHover'>
                         <IconButton onClick={
                           () => {
                             setSelectedTask(todo);

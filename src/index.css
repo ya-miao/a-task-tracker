@@ -15,10 +15,6 @@ body {
   background-color: #F6EEE0;
 }
 
-code {
-
-}
-
 .showOnHover {
   opacity: 0.0;
   -webkit-transition: all 500ms ease-in-out;
@@ -30,4 +26,26 @@ code {
 
 .task-container:hover .showOnHover {
   opacity: 1.0;
+}
+
+.task-container:hover {
+  background-color: rgb(251, 251, 251);
+}
+
+.task-container{
+  border: 0.1px black solid;
+}
+
+.signout-btn {
+  display: flex;
+  align-self: flex-end;
+  width: fit-content;
+  border: 2px black solid;
+  color: black;
+  text-align: center;
+  padding: .5rem;
+}
+
+.signout-btn:hover {
+  cursor: pointer;
 }

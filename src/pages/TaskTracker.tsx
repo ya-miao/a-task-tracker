@@ -1,5 +1,5 @@
-import { Button, Container, Grid, Stack } from "@mui/material";
-
+import { Button, Container, Grid, Stack, IconButton} from "@mui/material";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Sidebar from "../components/Sidebar";
 import ToDoList from "../components/ToDoList";
 
@@ -18,8 +18,10 @@ const TaskTracker = () => {
 
   return (
     <Stack>
-      <Button onClick={signOut}>Sign Out</Button>
-      <Grid container spacing={4}>
+      <button onClick={signOut} className="signout-btn">Sign Out
+          <AccountCircleIcon sx={{marginLeft: "3px"}}/>
+      </button>
+      <Grid container spacing={4} mt={1}>
         <Grid item xs={8}>
           <ToDoList />
         </Grid>
