@@ -17,14 +17,12 @@ const App = () => {
       justifyContent="center"
       style={{ minHeight: '100vh' }}
     >
-      {/* <Container sx={{ my: 4 }}> */}
       <Grid item>
       <Authenticator >
         {({ signOut, user }: any) => (
           <TaskTracker />)}
       </Authenticator>
       </Grid>
-      {/* </Container> */}
     </Grid>
   );
 }

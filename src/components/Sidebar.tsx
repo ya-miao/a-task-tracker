@@ -24,7 +24,7 @@ const Sidebar = ({ taskList }: SidebarProps) => {
   }, [taskList]);
 
   return (
-    <Stack spacing={4}>
+    <Stack spacing={4} width='60vh' height='100vh'>
       <Divider >TODAY'S DATE</Divider>
       <Typography className="heading" sx={{ margin: "20px" }} variant="h2" fontFamily={"'Bungee Shade', cursive"}>{todaysDate}</Typography>
       <Divider>PROGRESS</Divider>

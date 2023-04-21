@@ -17,6 +17,12 @@
       },
       "auth": {
         "tasktrackera2be0f63": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1k8dokfdo58j9",
+          "type": "manual"
+        }
       }
     }
   }

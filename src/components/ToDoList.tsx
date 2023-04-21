@@ -165,7 +165,7 @@ const ToDoList = () => {
   }, [todos, userId])
 
   return (
-    <>
+    <Box width='180vh' height='100vh'>
       <TaskDialog userId={userId} openDialog={open} setOpenDialog={setOpen} onAddTask={addTodo} onEditTask={editTodo} selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
       <Grid container spacing={4}>
         <Grid item xs={8}>
@@ -243,7 +243,7 @@ const ToDoList = () => {
           <Sidebar taskList={userTodos} />
         </Grid>
       </Grid>
-    </>
+    </Box>
   )
 };
 

@@ -13,7 +13,7 @@ const TaskTracker = () => {
   }
 
   return (
-    <Stack sx={{ mt: 2 }}>
+    <Stack sx={{ my: 2 }}>
        <button onClick={signOut} className="signout-btn">Sign Out
           <AccountCircleIcon sx={{marginLeft: "3px"}}/>
       </button>
