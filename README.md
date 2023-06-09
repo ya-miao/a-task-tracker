@@ -1,6 +1,6 @@
 # A Hangman Game
 
-Hackathon speedrun developed.
+Originally speedrun developed for a hackathon.
 
 ## Overview
 
